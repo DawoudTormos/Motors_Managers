@@ -14,7 +14,7 @@ app.get("/test", async (req, res) => {
     //res.send("API is running...");
 
     try {
-        const result = await pool.query("SELECT * FROM admins");
+        const result = await pool.query("update admins set username = 'aboahmad',updated_at = CURRENT_TIMESTAMP where id = 1");
         res.json(result.rows);
     } catch (err) {
         res.send("Error!");
