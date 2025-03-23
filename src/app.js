@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const pool = require("./db");
+const pool = require("../src/db/db");
 
 dotenv.config();
 
@@ -15,21 +15,18 @@ app.get("/test", async (req, res) => {
 
     try {
         const result = await pool.query("update admins set username = 'aboahmad',updated_at = CURRENT_TIMESTAMP where id = 1");
+        pool.set
         res.json(result.rows);
     } catch (err) {
         res.send("Error!");
         console.error(err.message);
+        console.log(err);
     }
 
 });
 
 
-const PORT = process.env.PORT ||5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}\nhttp://localhost:${PORT}`)
-    console.log(`\nTest route: http://localhost:${PORT}/test`)
-}
-);
+module.exports = app;
 
 
 
