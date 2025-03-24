@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const pool = require("./config/db");
+const authRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 
@@ -8,6 +9,7 @@ const app = express();
 
 app.use(express.json());
 
+app.use('/auth', authRoutes);
 
 app.get("/test", async (req, res) => {
 
