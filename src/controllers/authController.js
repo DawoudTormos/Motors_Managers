@@ -50,11 +50,20 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+
+    if(Object.keys(req.body).length !== 3){
+      
+      return res.status(400).json({ message: 'Invalid request data. more or less than needed keys' });
+    }
+    if (!['type', 'username', 'password'].every(key => Object.keys(req.body).includes(key))) {
+        return res.status(400).json({ message: 'Invalid request data. Missing required keys' });
+    }
+
     const { username, password, type } = req.body;
 
     if (!['admin', 'subscriber'].includes(type)) {
       return res.status(400).json({ message: 'Invalid user type' });
-    }
+    }  
 
     const result = await authenticateUser(type, username, password);
 
