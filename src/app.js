@@ -17,6 +17,8 @@ app.use('/auth', authRoutes);
 // Secure routes with authentication middleware
 app.use('/secure/devices', authenticateJWT, secureDevicesRoutes); 
 
+const energyData = new Map();
+
 app.get("/test", async (req, res) => {
 
     //res.send("API is running...");
