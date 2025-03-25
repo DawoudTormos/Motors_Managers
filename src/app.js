@@ -1,7 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const pool = require("./config/db");
+const pool = require("./config/db");// <--- import pool from db file
 const authRoutes = require('./routes/authRoutes');
+const { authenticateJWT } = require('./middlewares/authMiddleware');
+const secureDevicesRoutes = require('./routes/secureDevicesRoutes');//
+
 
 dotenv.config();
 
@@ -10,6 +13,9 @@ const app = express();
 app.use(express.json());
 
 app.use('/auth', authRoutes);
+
+// Secure routes with authentication middleware
+app.use('/secure/devices', authenticateJWT, secureDevicesRoutes); 
 
 app.get("/test", async (req, res) => {
 
