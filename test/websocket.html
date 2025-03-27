@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h2>WebSocket Test Client</h2>
+    <div>
+        <input type="text" id="token" placeholder="Enter JWT token" style="width: 300px;">
+        <button onclick="connect()">Connect</button>
+    </div>
+    <br>
+    <div>
+        <input type="text" id="message" placeholder="Enter message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <div>
+        <h3>Messages:</h3>
+        <pre id="output" style="background: #f0f0f0; padding: 10px;"></pre>
+    </div>
+
+    <script>
+        let ws;
+
+        function connect() {
+            const token = document.getElementById('token').value;
+            
+            // Create WebSocket connection with token as protocol
+            ws = new WebSocket(`ws://localhost:5000`, [token]);
+
+            ws.onopen = () => {
+                log('Connected to WebSocket');
+            };
+
+            ws.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                log('Received: ' + JSON.stringify(message, null, 2));
+            };
+
+            ws.onerror = (error) => {
+                log('WebSocket error: ' + error);
+            };
+
+            ws.onclose = () => {
+                log('Disconnected from WebSocket');
+            };
+        }
+
+        function sendMessage() {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                alert('Please connect first');
+                return;
+            }
+            const message = document.getElementById('message').value;
+            ws.send(message);
+            log('Sent: ' + message);
+        }
+
+        function log(message) {
+            const output = document.getElementById('output');
+            output.textContent += message + '\n';
+        }
+    </script>
+</body>
+</html>
